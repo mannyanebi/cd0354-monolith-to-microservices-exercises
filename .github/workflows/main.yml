@@ -1,30 +1,25 @@
-name: Publish test Docker Image
+name: Publish test Docker Image II
 on:
   push:
     branches: [main]
 
-defaults:
-  run:
-    working-directory: lesson-4-automating-development/exercises/travis_ci
-
 jobs:
-  push_to_registry:
-    name: Build and push Docker Image to Docker Hub
+  build:
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        node-version: [14.x]
-
     steps:
-      - name: Check out Github repo
+      - name: Checkout
         uses: actions/checkout@v2
-      - name: Log in to Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      - name: Build image and push to Docker Hub
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Build and push
         uses: docker/build-push-action@v2
         with:
+          context: ./lesson-4-automating-development/exercises/travis_ci
+          file: ./lesson-4-automating-development/exercises/travis_ci/dockerfile
           push: true
-          tags: "simple-node"
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/simple-node
