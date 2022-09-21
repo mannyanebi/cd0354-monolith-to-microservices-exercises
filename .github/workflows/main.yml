@@ -3,10 +3,18 @@ on:
   push:
     branches: [main]
 
+defaults:
+  run:
+    working-directory: lesson-4-automating-development/exercises/travis_ci
+
 jobs:
   push_to_registry:
     name: Build and push Docker Image to Docker Hub
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [14.x]
+
     steps:
       - name: Check out Github repo
         uses: actions/checkout@v2
@@ -19,4 +27,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: "test-docker-build"
+          tags: "simple-node"
