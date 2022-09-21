@@ -20,6 +20,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./lesson-4-automating-development/exercises/travis_ci
-          file: ./lesson-4-automating-development/exercises/travis_ci/dockerfile
+          file: ./lesson-4-automating-development/exercises/travis_ci/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple-node
