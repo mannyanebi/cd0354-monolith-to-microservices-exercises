@@ -1,0 +1,22 @@
+name: Publish test Docker Image
+on:
+  push:
+    branches: [main]
+
+jobs:
+  push_to_registry:
+    name: Build and push Docker Image to Docker Hub
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out Github repo
+        uses: actions/checkout@v2
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Build image and push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: "Test Version 1"
